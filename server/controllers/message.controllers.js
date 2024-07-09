@@ -5,8 +5,6 @@ export const sendMessage = async (req, res) => {
   const id = req.params.id;
   const { message } = req.body;
   try {
-    
-    
     let converstion = await Conversation.findOne({participants:{$all:[req.user._id,id]}});
 
     if(!converstion){
