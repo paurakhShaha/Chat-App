@@ -1,19 +1,22 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
-
+import cors from 'cors';
 import authRoute from './routes/authroutes.js';
 import messageRoute from './routes/messageroutes.js';
 import userRoute from './routes/userroutes.js';
-
+import { app ,server} from './Socket/socket.js';
 import { connectDB } from './database/connectdb.js';
 
 
 dotenv.config();
-const app = express();
+
 const port = process.env.PORT|| 3000;
 
-
+app.use(cors({
+  origin: "http://localhost:3000",
+  methods: ["GET", "POST"]
+}));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -27,7 +30,7 @@ app.use("/api/v1/user", userRoute);
 const connection = async () => {
   try {
     await connectDB(process.env.MONGO_URI);
-    app.listen(port, () => {  
+    server.listen(port, () => {  
       console.log(`Server is running on port ${port}`);
     } );
   } catch (error) {

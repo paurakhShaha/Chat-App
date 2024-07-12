@@ -1,17 +1,19 @@
 import React from 'react'
 import Messages from './Messages'
 import MessageInput from './MessageInput'
+import useConversation from '../../zustand/useCoversation';
+
 
 const MessageContainer = () => {
-  const isMessaging = true
+
+  const {selectedConversation} = useConversation();
+  
   return (
     <div className='md:min-w-[450px] flex flex-col'>
-    
-
-      {!isMessaging ?
+      {!selectedConversation ?
        <>
       <div className='flex flex-col items-center justify-center h-full'>
-        <p>Hey Sele</p>
+        <p>Hey {}</p>
       </div>
       </>
      :
@@ -21,7 +23,7 @@ const MessageContainer = () => {
         <span className='label-text'>TO:
           </span>
           <span className='text-gray-900 font-bold mx-2'>
-            John Doe
+            {selectedConversation?.username}
           </span>
       </div>
       <Messages/>

@@ -1,19 +1,31 @@
 import React from 'react'
+import useConversation from '../../zustand/useCoversation';
+import { useSocketContext } from '../../context/SocketContext';
 
-function Coversation() {
+function Coversation( {conversation,emojis}) {
+  const {username,profilePic} = conversation;
+  const {selectedConversation,setSelectedConversation} = useConversation();
+  const {onlineUsers} = useSocketContext();
+  console.log(onlineUsers);
+  const isOnline = onlineUsers.includes(conversation._id);
+
+  const isSlected = selectedConversation?._id === conversation._id; 
+  
   return (
     <>
-    <div className=' flex items-center hover:bg-sky-300 rounded gap-2 p-2 py-1 cursor-pointer'>
-    <div className='avatar online'>
+    <div className={` flex items-center hover:bg-sky-300 rounded gap-2 p-2 py-1 cursor-pointer ${
+      isSlected ? "bg-sky-300" : ""
+    }`} onClick={() => setSelectedConversation(conversation)}>
+    <div className={`avatar ${isOnline ? "online" : ""}`}>
     <div className='w-12 rounded-full'>
-        <img src="https://avatar.iran.liara.run/public" alt="user avatar" srcset="" />
+        <img src={profilePic} alt="user avatar"/>
     </div>
 
     </div>
     <div className='flex flex-col flex-1'>
       <div className='flex gap-3 justify-between'>
-        <p className='text-gray-200 font-bold'>John Doe</p>
-        <span className='text-xl'>😄</span>
+        <p className='text-gray-200 font-bold'>{username}</p>
+        <span className='text-xl'>{emojis}</span>
 
       </div>
       </div>

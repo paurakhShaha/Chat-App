@@ -1,7 +1,7 @@
 
-import mongooes from 'mongoose';
+import mongoose from 'mongoose';
 
-const userSchema = new mongooes.Schema(
+const userSchema = new mongoose.Schema(
   {
     fullname: {
       type : String,
@@ -33,6 +33,7 @@ const userSchema = new mongooes.Schema(
 )
 
 
-const User = mongooes.model('User', userSchema);
+const User = mongoose.models.User || mongoose.model('User', userSchema);
+
 
 export default User;

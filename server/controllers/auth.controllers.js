@@ -14,14 +14,14 @@ export const login = async (req, res) => {
     const passwordMatch =  bcrypt.compare(password,user.password);
     if(passwordMatch){
       genJWTokenandSetCookie(user._id,res);
-      return res.json({message:"Login Successful"}).status(200);
+      return res.json({username : user.username,_id:user._id,profilePic:user.profilePic,gender:user.gender}).status(200);
     }
     else{
-      return res.status(400).json({message:"Invalid credentials"});
+      return res.status(400).json({message:"Wrong Password"});
     }
   }
   else{
-    return res.status(400).json({message:"Invalid credentials"});
+    return res.status(400).json({message:"Invalid Username"});
   
   }
   } catch (error) {
@@ -61,7 +61,7 @@ export const signup =async (req, res) => {
   genJWTokenandSetCookie(newUser._id,res);
 
    
-    res.json({msg:"New user created sucessfully"}).status(201);
+    res.json({username : newUser.username,_id:newUser._id,profilePic:newUser.profilePic,gender:newUser.gender}).status(201);
 }
   
   catch(error){
