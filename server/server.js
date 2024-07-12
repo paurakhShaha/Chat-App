@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
+import path from 'path';
 import cors from 'cors';
 import authRoute from './routes/authroutes.js';
 import messageRoute from './routes/messageroutes.js';
@@ -12,7 +13,7 @@ import { connectDB } from './database/connectdb.js';
 dotenv.config();
 
 const port = process.env.PORT|| 3000;
-
+const __dirname = path.resolve();
 app.use(cors({
   origin: "http://localhost:3000",
   methods: ["GET", "POST"]
@@ -24,7 +25,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/message", messageRoute);
 app.use("/api/v1/user", userRoute);
- 
+
+ app.use(express.static(path.join(__dirname, "/client/dist")));
+
+app.get("*", (req, res) => {
+	res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});
 
 
 const connection = async () => {
